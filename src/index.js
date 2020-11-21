@@ -12,6 +12,7 @@ const config = {
   scene: {
     preload,
     create,
+    update,
   },
 }
 
@@ -31,10 +32,17 @@ function create() {
   // y - 300
   // key of the image
   this.add.image(0, 0, 'sky').setOrigin(0, 0)
-  bird = this.add
+  bird = this.physics.add
     .sprite(config.width * 0.1, config.height / 2, 'bird')
     .setOrigin(0)
-  debugger
+  bird.body.gravity.y = 200
+}
+
+// 60fps
+// 60 times p/second
+// 60 * 16 = 1000ms
+function update(time, delta) {
+  console.log(bird.body.velocity.y)
 }
 
 new Phaser.Game(config)
