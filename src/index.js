@@ -5,9 +5,14 @@ const config = {
   type: Phaser.AUTO,
   width: 800,
   height: 600,
+
   physics: {
     // Arcade physics plugin, manages physics simulation
     default: 'arcade',
+    arcade: {
+      // gravity: { y: 200 },
+      debug: true,
+    },
   },
   scene: {
     preload,
@@ -24,25 +29,26 @@ function preload() {
   this.load.image('bird', 'assets/bird.png')
 }
 
+const VELOCITY = 200
+
 let bird = null
+let totalDelta = null
 
 // Initiliazing application
 function create() {
-  // x - 400
-  // y - 300
-  // key of the image
   this.add.image(0, 0, 'sky').setOrigin(0, 0)
   bird = this.physics.add
     .sprite(config.width * 0.1, config.height / 2, 'bird')
     .setOrigin(0)
-  bird.body.gravity.y = 200
+  bird.body.velocity.x = VELOCITY
 }
 
-// 60fps
-// 60 times p/second
-// 60 * 16 = 1000ms
 function update(time, delta) {
-  console.log(bird.body.velocity.y)
+  if (bird.x >= config.width - bird.width) {
+    bird.body.velocity.x = -VELOCITY
+  } else if (bird.x <= 0) {
+    bird.body.velocity.x = VELOCITY
+  }
 }
 
 new Phaser.Game(config)
